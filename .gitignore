@@ -1,1 +1,1 @@
-./ansible/roles/login_user/files/login-key
+ansible/roles/login_user/files/login-key
