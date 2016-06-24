@@ -1,0 +1,36 @@
+---
+ - name: install base sotfware
+   apt: name={{ item }} state=present
+   with_items:
+      - libbz2-dev
+      - zlib1g-dev
+      - libssl-dev
+      - libreadline-dev 
+      - libsqlite3-dev
+
+ - name: install pyenv
+   git: repo=https://github.com/yyuu/pyenv.git dest=/home/{{ login_user }}/.pyenv
+
+ - name: chown pyenv
+   file: path=/home/{{ login_user }}/.pyenv owner={{ login_user }} group={{ login_user }} mode=0700
+
+ - name: setting pyenv path to .bashrc
+   lineinfile:
+    dest='/home/{{ login_user }}/.bashrc'
+    state=present
+    line='export PATH="$HOME/.pyenv/bin:$PATH"'
+
+ - name: setting pyenv init to .bashrc
+   lineinfile:
+    dest='/home/{{ login_user }}/.bashrc'
+    state=present
+    line='eval "$(pyenv init -)"'
+
+ - name: pyenv build version 2.7.11
+   command: su - {{ login_user }} -c "pyenv install 2.7.11"
+   args:
+    creates: /home/{{ login_user }}/.pyenv/versions/2.7.11
+
+ - name: python 2.7.11を全体に適用する
+   command: su - {{ login_user }} -c "pyenv global 2.7.11"
+

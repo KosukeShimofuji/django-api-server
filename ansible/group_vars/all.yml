@@ -1,0 +1,10 @@
+---
+login_user: "login_user"
+mysql_root_pass: "must_rewrite"
+wordpress: {
+  dbname: "wp_db",
+  dbuser: "wp_user",
+  dbpass: "must_rewrite",
+  src_uri: "https://ja.wordpress.org/latest-ja.tar.gz"
+}
+

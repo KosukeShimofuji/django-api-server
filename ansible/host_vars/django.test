@@ -1,0 +1,4 @@
+---
+hostname: 'django.test'
+ansible_user: vagrant
+
