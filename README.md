@@ -32,6 +32,7 @@ $ pyenv global django
 ```
 $ pip install --upgrade pip
 $ pip install django
+$ pip install psycopg2 # djangoからpostgresqlを操作するために必要
 ```
 
 ## postgresqlのインストール
@@ -66,6 +67,9 @@ $ git clone git@github.com:KosukeShimofuji/django-api-server.git
 $ cd django-api-server/
 $ git branch first-app
 $ git checkout first-app
+$ git add fitst-app
+$ git commit -m "first commit"
+$ git push origin first-app
 ```
 
 ## djangoでプロジェクトを作成
@@ -93,6 +97,12 @@ $ python manage.py runserver 0.0.0.0:8000
 ```
 
 ## firtst_appの設定を行う
+
+アプリケーションの設定はsettings.pyを編集することで行うことができる。
+
+ * postgresqlを利用するに設定
+
+[修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/fceb8011a82ee1ee1be496ec4bfdcd34bce6252f)
 
 
 # 参考文献
