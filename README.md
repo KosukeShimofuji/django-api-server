@@ -35,6 +35,13 @@ $ pip install django
 $ pip install psycopg2 # djangoからpostgresqlを操作するために必要
 ```
 
+今回導入されたのはdjango1.9
+
+```
+$ pip list | grep -i django
+Django (1.9.7)
+```
+
 ## postgresqlのインストール
 
 djangoのチュートリアルではpython2.5以降から同梱されているsqlite3を使用することが推奨されていますが、私の場合は実運用する時はpostgresqlかmysqlになりそうなのでpostgresqlと連携してdjangoを使用します。
@@ -129,15 +136,81 @@ django=> select * from django_migrations;
 (0 行)
 ```
 
+ * django applicationについて確認する
+
+以下のdjangoアプリケーションがデフォルトで使用されるように設定されており、これらのアプリケーションは最低でも1つのテーブルを利用する。
+使わないアプリケーションがあるならこの時点で外しておくのが望ましいが、今はよくわからないのでデフォルトでいく。
+
+```
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+```
+
+ * databaseのmigrate
+
+以前はこの操作はsyncdbという名前になっていたようだが、現在はmigrateという名前になっている模様。
+
+```
+$ python manage.py migrate
+Operations to perform:
+  Apply all migrations: sessions, admin, contenttypes, auth
+Running migrations:
+  Rendering model states... DONE
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying sessions.0001_initial... OK
+```
+
+migrate操作によって作成されたテーブルの一覧を見てみる。
+
+```
+django-> \dt
+                    リレーションの一覧
+ スキーマ |            名前            |    型    | 所有者
+----------+----------------------------+----------+--------
+ public   | auth_group                 | テーブル | django
+ public   | auth_group_permissions     | テーブル | django
+ public   | auth_permission            | テーブル | django
+ public   | auth_user                  | テーブル | django
+ public   | auth_user_groups           | テーブル | django
+ public   | auth_user_user_permissions | テーブル | django
+ public   | django_admin_log           | テーブル | django
+ public   | django_content_type        | テーブル | django
+ public   | django_migrations          | テーブル | django
+ public   | django_session             | テーブル | django
+```
+
+テーブル名から大体、何に使用されるテーブルなのかは想像が付く。
+
  * timezoneの変更
 
 [修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/c3fe7ebc81c59ea8926aac823830915c99b31bf3)
 
+## Viewの作成
+
+views.pyを追加して、indexメソッドを追記して、urls.pyにどのようなリクエストがきた時にindexメソッドを呼ぶのかを定義する。urls.pyは俗に言うcontrollerだと思われる。
+[修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/706e06a4374e2df53f03cacb28b67f42da298dda)
 
 
 # 参考文献
 
  * http://docs.djangoproject.jp/en/latest/index.html
+ * https://docs.djangoproject.com/en/1.9/intro/tutorial01/
  * http://qiita.com/kimihiro_n/items/86e0a9e619720e57ecd8
 
 
