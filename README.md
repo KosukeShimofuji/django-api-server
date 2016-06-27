@@ -11,23 +11,21 @@ $ vagrant up
 $ ansible-playbook -i development site.yml
 ```
 
-# pythonとvirtualenvで開発環境を用意する
-
- * pyenv
+## pyenv
 
 ```
 $ pyenv install 3.5.1
 $ pyenv global 3.5.1
 ```
 
- * virtualenv
+## virtualenv
 
 ```
 $ pyenv virtualenv 3.5.1 django 
 $ pyenv global django
 ```
 
-# djangoのインストール
+## djangoのインストール
 
  * djangoをpipでインストールする。
 
@@ -36,7 +34,7 @@ $ pip install --upgrade pip
 $ pip install django
 ```
 
-# postgresqlのインストール
+## postgresqlのインストール
 
 djangoのチュートリアルではpython2.5以降から同梱されているsqlite3を使用することが推奨されていますが、私の場合は実運用する時はpostgresqlかmysqlになりそうなのでpostgresqlと連携してdjangoを使用します。
 本環境では以下のようにpostgresqlのデータベースを設定しています。
@@ -61,7 +59,7 @@ SSL接続(プロトコル: TLSv1.2, 暗号化方式: ECDHE-RSA-AES256-GCM-SHA384
 
 [チュートリアル](http://docs.djangoproject.jp/en/latest/intro/tutorial01.html)を参考にdjangoの使い方な学んでいく。
 
- * git branchの作成
+## git branchの作成
 
 ```
 $ git clone git@github.com:KosukeShimofuji/django-api-server.git
@@ -70,7 +68,7 @@ $ git branch first-app
 $ git checkout first-app
 ```
 
- * djangoでプロジェクトを作成
+## djangoでプロジェクトを作成
 
 ```
 $ django-admin.py startproject first_app
@@ -86,7 +84,7 @@ first_app/
 1 directory, 5 files
 ```
 
- * 開発用サーバの起動
+## 開発用サーバの起動
 
 first_appディレクトリに移動してから以下のコマンドで開発用サーバを起動する。
 
@@ -94,8 +92,7 @@ first_appディレクトリに移動してから以下のコマンドで開発�
 $ python manage.py runserver 0.0.0.0:8000
 ```
 
- * firtst_appの設定を行う
-
+## firtst_appの設定を行う
 
 
 # 参考文献
