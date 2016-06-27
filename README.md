@@ -104,6 +104,36 @@ $ python manage.py runserver 0.0.0.0:8000
 
 [修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/fceb8011a82ee1ee1be496ec4bfdcd34bce6252f)
 
+```
+django=> \dt
+                リレーションの一覧
+ スキーマ |       名前        |    型    | 所有者
+----------+-------------------+----------+--------
+ public   | django_migrations | テーブル | django
+(1 行)
+
+django=> \d django_migrations
+                                 テーブル "public.django_migrations"
+   列    |            型            |                             修飾語
+---------+--------------------------+----------------------------------------------------------------
+ id      | integer                  | not null default nextval('django_migrations_id_seq'::regclass)
+ app     | character varying(255)   | not null
+ name    | character varying(255)   | not null
+ applied | timestamp with time zone | not null
+インデックス:
+    "django_migrations_pkey" PRIMARY KEY, btree (id)
+
+django=> select * from django_migrations; 
+ id | app | name | applied
+----+-----+------+---------
+(0 行)
+```
+
+ * timezoneの変更
+
+[修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/c3fe7ebc81c59ea8926aac823830915c99b31bf3)
+
+
 
 # 参考文献
 
