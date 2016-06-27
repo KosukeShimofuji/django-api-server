@@ -266,6 +266,10 @@ Hello, world. You're at the polls index.
 
  * [修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/cbe2123f3b5e2ad374f14af6552d25afa0dc0788)
 
+### makemigrations
+
+makemigrationsコマンドを利用してmigration用のスクリプトを生成します。
+
 ```
 $ python manage.py makemigrations polls
 Migrations for 'polls':
@@ -274,6 +278,137 @@ Migrations for 'polls':
     - Create model Poll
     - Add field poll to choice
 ```
+
+作成された0001_initial.pyを観察してみましょう。
+
+```
+class Migration(migrations.Migration):
+
+    initial = True
+
+    dependencies = [
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='Choice',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('choice', models.CharField(max_length=200)),
+                ('votes', models.IntegerField()),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Poll',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('question', models.CharField(max_length=200)),
+                ('pub_date', models.DateTimeField(verbose_name='date published')),
+            ],
+        ),
+        migrations.AddField(
+            model_name='choice',
+            name='poll',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='polls.Poll'),
+        ),
+    ]
+```
+
+first_app/polls/models.pyで指示した通りにデータベースを操作しようとしていることがわかります。
+
+### sqlmigrate
+
+sqlmigrateコマンドを利用するとこれから発行しようとしているSQL文を確認することができます。
+
+```
+$ python manage.py sqlmigrate polls 0001
+BEGIN;
+--
+-- Create model Choice
+--
+CREATE TABLE "polls_choice" ("id" serial NOT NULL PRIMARY KEY, "choice" varchar(200) NOT NULL, "votes" integer NOT NULL);
+--
+-- Create model Poll
+--
+CREATE TABLE "polls_poll" ("id" serial NOT NULL PRIMARY KEY, "question" varchar(200) NOT NULL, "pub_date" timestamp with time zone NOT NULL);
+--
+-- Add field poll to choice
+--
+ALTER TABLE "polls_choice" ADD COLUMN "poll_id" integer NOT NULL;
+ALTER TABLE "polls_choice" ALTER COLUMN "poll_id" DROP DEFAULT;
+CREATE INDEX "polls_choice_582e9e5a" ON "polls_choice" ("poll_id");
+ALTER TABLE "polls_choice" ADD CONSTRAINT "polls_choice_poll_id_3a553f1a_fk_polls_poll_id" FOREIGN KEY ("poll_id") REFERENCES "polls_poll" ("id") DEFERRABLE INITIALLY DEFERRED;
+
+COMMIT;
+```
+
+### migrate
+
+migrateコマンドを実行して実際にテーブルを作成してみましょう。
+
+```
+$ python manage.py migrate
+Operations to perform:
+  Apply all migrations: polls, admin, contenttypes, sessions, auth
+Running migrations:
+  Rendering model states... DONE
+  Applying polls.0001_initial... OK
+```
+
+想定通りのテーブルができているかをpostgresqlクライアントを利用して確認してみます。
+
+```
+django-> \dt
+                    リレーションの一覧
+ スキーマ |            名前            |    型    | 所有者
+----------+----------------------------+----------+--------
+ public   | auth_group                 | テーブル | django
+ public   | auth_group_permissions     | テーブル | django
+ public   | auth_permission            | テーブル | django
+ public   | auth_user                  | テーブル | django
+ public   | auth_user_groups           | テーブル | django
+ public   | auth_user_user_permissions | テーブル | django
+ public   | django_admin_log           | テーブル | django
+ public   | django_content_type        | テーブル | django
+ public   | django_migrations          | テーブル | django
+ public   | django_session             | テーブル | django
+ public   | polls_choice               | テーブル | django
+ public   | polls_poll                 | テーブル | django
+
+django=> \d polls_choice;
+                                テーブル "public.polls_choice"
+   列    |           型           |                          修飾語
+---------+------------------------+-----------------------------------------------------------
+ id      | integer                | not null default nextval('polls_choice_id_seq'::regclass)
+ choice  | character varying(200) | not null
+ votes   | integer                | not null
+ poll_id | integer                | not null
+インデックス:
+    "polls_choice_pkey" PRIMARY KEY, btree (id)
+    "polls_choice_582e9e5a" btree (poll_id)
+外部キー制約:
+    "polls_choice_poll_id_3a553f1a_fk_polls_poll_id" FOREIGN KEY (poll_id) REFERENCES polls_poll(id) DEFERRABLE INITIALLY DEFERRED
+
+django=> \d polls_poll;
+                                 テーブル "public.polls_poll"
+    列    |            型            |                         修飾語
+----------+--------------------------+---------------------------------------------------------
+ id       | integer                  | not null default nextval('polls_poll_id_seq'::regclass)
+ question | character varying(200)   | not null
+ pub_date | timestamp with time zone | not null
+インデックス:
+    "polls_poll_pkey" PRIMARY KEY, btree (id)
+参照元：
+    TABLE "polls_choice" CONSTRAINT "polls_choice_poll_id_3a553f1a_fk_polls_poll_id" FOREIGN KEY (poll_id) REFERENCES polls_poll(id) DEFERRABLE INITIALLY DEFERRED
+```
+
+## Modelの修正
+
+モデルの修正はmodels.pyを修正してmakemigrationsを実行し、migrateすることで修正を適用することができます。
+
+## APIで遊んでみる
+
+
 
 # 参考文献
 
