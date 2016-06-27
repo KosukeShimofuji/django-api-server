@@ -408,6 +408,51 @@ django=> \d polls_poll;
 
 ## APIで遊んでみる
 
+```
+(django) login_user@django ~/django-api-server/first_app $ python manage.py shell
+Python 3.5.1 (default, Jun 27 2016, 11:44:53)
+[GCC 4.9.2] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from polls.models import Question, Choice
+>>> Question.objects.all()
+[]
+# レコードの追加
+>>> from django.utils import timezone
+>>> q = Question(question_text="What's new?", pub_date=timezone.now())
+>>> q.save()
+>>> Question.objects.all()
+[<Question: Question object>]
+# レコードの参照
+>>> q.id
+1
+>>> q.question_text
+"What's new?"
+>>> q.pub_date
+datetime.datetime(2016, 6, 27, 7, 27, 32, 951561, tzinfo=<UTC>)
+>>> Question.objects.all()
+[<Question: Question object>]
+```
+
+## modelsに__str__メソッドを追加する
+
+APIでデータベースにアクセスすることができましたが、Question: Question
+objectなんていう表記は親切ではないので、__str__メソッドをmodels.pyに付け加えます。
+
+ * [修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/267fcd4316bdf19000fdd5bef1a75800ceb1be37)
+
+__str__メソッドを加えると、以下のように親切な表記に変更されます。日本語の最新のdjangoのチュートリアルでは__str__メソッドより__unicode__メソッドを使うことを推奨していましたが、私の環境では動作しませんでした。
+
+```
+$ python manage.py shell
+Python 3.5.1 (default, Jun 27 2016, 11:44:53)
+[GCC 4.9.2] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from polls.models import Question, Choice
+>>> Question.objects.all()
+[<Question: What's new?>]
+```
 
 
 # 参考文献
