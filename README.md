@@ -201,11 +201,75 @@ django-> \dt
 
 [修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/c3fe7ebc81c59ea8926aac823830915c99b31bf3)
 
+## アプリケーションの作成
+
+プロジェクトとアプリケーションの違いを明確にしなければなりません。アプリケーションとはブログや公開レコードのデータベースなどの実際のwebアプリケーションを指します。
+プロジェクトはwebアプリケーションを構築するための設定やアプリケーションを集めたものです。1つのプロジェクには複数のアプリケーションを入れることができ、1つのアプリケーションは複数のプロジェクトで使用することができます。
+
+```
+(django) login_user@django ~/django-api-server/first_app $ python manage.py startapp polls
+(django) logsn_user@django ~/django-api-server/first_app $ tree
+.
+├── first_app
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-35.pyc
+│   │   ├── settings.cpython-35.pyc
+│   │   ├── urls.cpython-35.pyc
+│   │   ├── views.cpython-35.pyc
+│   │   └── wsgi.cpython-35.pyc
+│   ├── settings.py
+│   ├── urls.py
+│   ├── views.py
+│   └── wsgi.py
+├── manage.py
+└── polls
+    ├── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── migrations
+    │   └── __init__.py
+    ├── models.py
+    ├── tests.py
+    └── views.py
+```
+
 ## Viewの作成
 
 views.pyを追加して、indexメソッドを追記して、urls.pyにどのようなリクエストがきた時にindexメソッドを呼ぶのかを定義する。urls.pyは俗に言うcontrollerだと思われる。
 [修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/706e06a4374e2df53f03cacb28b67f42da298dda)
 
+```
+$ curl django.test:8000
+Hello, world. You're at the first_app index.
+```
+
+次はpollsにアクセスするためのURIを追記してみましょう。
+[修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/6917f4226406d32cf3ec085c1027f07c40bff28b)
+
+```
+$ curl django.test:8000/polls/
+Hello, world. You're at the polls index.
+```
+
+## Modelの作成
+
+以下のコミットでPollテーブルの作成とquestionとpub_dateカラムの作成、Choiceテーブルの作成とpollとchoiseカラムの作成、及び、リレーションの作成を指示しています。
+[修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/343a3a236a669eee705f76670eb81f1c0571c62b)
+
+## Modelの有効化
+
+モデルの有効化によって、djangoはcreate tableの実行と、テーブルのアクセスするapiの作成を自動的に行うことができますが、djangoにアプリケーションが作成されたことを教えてあげる必要があります。
+[修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/cbe2123f3b5e2ad374f14af6552d25afa0dc0788)
+
+```
+$ python manage.py makemigrations polls
+Migrations for 'polls':
+  0001_initial.py:
+    - Create model Choice
+    - Create model Poll
+    - Add field poll to choice
+```
 
 # 参考文献
 
