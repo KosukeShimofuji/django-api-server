@@ -36,6 +36,27 @@ $ pip install --upgrade pip
 $ pip install django
 ```
 
+# postgresqlのインストール
+
+djangoのチュートリアルではpython2.5以降から同梱されているsqlite3を使用することが推奨されていますが、私の場合は実運用する時はpostgresqlかmysqlになりそうなのでpostgresqlと連携してdjangoを使用します。
+本環境では以下のようにpostgresqlのデータベースを設定しています。
+
+```
+dbname: "django"
+dbuser: "django"
+dbpass: "hagPijhoajdegocmuOtvethapOcvigry"
+```
+
+接続をテストしてみる。
+
+```
+$ psql -hlocalhost -Udjango
+ユーザ django のパスワード:
+psql (9.4.8)
+SSL接続(プロトコル: TLSv1.2, 暗号化方式: ECDHE-RSA-AES256-GCM-SHA384, ビット長: 256, 圧縮: オフ)
+"help" でヘルプを表示します.
+```
+
 # djangoのチュートリアル
 
 [チュートリアル](http://docs.djangoproject.jp/en/latest/intro/tutorial01.html)を参考にdjangoの使い方な学んでいく。
@@ -72,6 +93,10 @@ first_appディレクトリに移動してから以下のコマンドで開発�
 ```
 $ python manage.py runserver 0.0.0.0:8000
 ```
+
+ * firtst_appの設定を行う
+
+
 
 # 参考文献
 

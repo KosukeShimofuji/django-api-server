@@ -6,4 +6,5 @@
     - common
     - login_user
     - apache
+    - postgresql
     - python
