@@ -454,11 +454,36 @@ Type "help", "copyright", "credits" or "license" for more information.
 [<Question: What's new?>]
 ```
 
+## 管理サイトの有効化
+
+事前にdjango.contrib.adminを有効化する（デフォルトで有効化されている)
+
+ * 管理アカウントの作成
+
+```
+$ python manage.py createsuperuser
+Username (leave blank to use 'login_user'): admin
+Email address: kosuke.shimofuji@gmail.com
+Password:
+Password (again):
+Superuser created successfully.
+```
+
+ * 本テスト環境では以下のようなパスワードを設定した
+ 
+```
+UxurbIdvucrabesvauvKiWehawakAph7
+```
+
+[管理画面](http://django.test:8000/admin)にアクセスする。
+
+## poll appのモデルを管理サイトで編集できるようにする
+
+ * [修正コミット](https://github.com/KosukeShimofuji/django-api-server/commit/3a1f29a1b93f58f0e1a3bc96bee1cb4316e0d7e8)
 
 # 参考文献
 
  * http://docs.djangoproject.jp/en/latest/index.html
  * https://docs.djangoproject.com/en/1.9/intro/tutorial01/
- * http://qiita.com/kimihiro_n/items/86e0a9e619720e57ecd8
 
 
