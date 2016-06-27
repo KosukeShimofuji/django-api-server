@@ -15,6 +15,7 @@
  - name: install base sotfware
    apt: name={{ item }} state=present
    with_items:
+      - tree
       - figlet
       - toilet
       - boxes

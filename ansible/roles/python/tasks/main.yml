@@ -26,11 +26,15 @@
     state=present
     line='eval "$(pyenv init -)"'
 
- - name: pyenv build version 2.7.11
-   command: su - {{ login_user }} -c "pyenv install 2.7.11"
-   args:
-    creates: /home/{{ login_user }}/.pyenv/versions/2.7.11
+ - name: install virtualenv
+   git: repo=https://github.com/yyuu/pyenv-virtualenv.git dest=/home/{{ login_user }}/.pyenv/plugins/pyenv-virtualenv
+ 
+ - name: chown virtualenv
+   file: path=/home/{{ login_user }}/.pyenv/plugins/pyenv-virtualenv owner={{ login_user }} group={{ login_user }} mode=0700
 
- - name: python 2.7.11を全体に適用する
-   command: su - {{ login_user }} -c "pyenv global 2.7.11"
+ - name: setting virtualen path to .bashrc
+   lineinfile:
+    dest='/home/{{ login_user }}/.bashrc'
+    state=present
+    line='eval "$(pyenv virtualenv-init -)"'
 

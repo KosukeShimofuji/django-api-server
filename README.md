@@ -11,11 +11,20 @@ $ vagrant up
 $ ansible-playbook -i development site.yml
 ```
 
-# pythonの基礎環境を用意する
+# pythonとvirtualenvで開発環境を用意する
+
+ * pyenv
 
 ```
-$ pyenv install 2.7.11
-$ pyenv global 2.7.11
+$ pyenv install 3.5.1
+$ pyenv global 3.5.1
+```
+
+ * virtualenv
+
+```
+$ pyenv virtualenv 3.5.1 django 
+$ pyenv global django
 ```
 
 # djangoのインストール
@@ -50,4 +59,6 @@ mysite/
 # 参考文献
 
  * http://docs.djangoproject.jp/en/latest/index.html
+ * http://qiita.com/kimihiro_n/items/86e0a9e619720e57ecd8
+
 

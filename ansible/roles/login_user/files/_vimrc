@@ -1,6 +1,6 @@
 syntax on
 "カラースキーマ設定
-colorscheme relaxedgreen
+"colorscheme simplewhite
 "vi互換モードをオフ(vimの拡張機能を有効)
 set nocompatible
 "バッファを保存しなくても他のバッファを表示できるようにする
@@ -49,8 +49,8 @@ set notimeout ttimeout ttimeoutlen=200
 "スペースでインデントする
 set expandtab
 " インデント幅を設定する
-set tabstop=2
-set shiftwidth=2
+set softtabstop=4
+set shiftwidth=4
 
 set encoding=utf-8
 set fileencoding=utf-8
@@ -70,8 +70,7 @@ set directory=~/.vim/swap
 "タグジャンプのCtrl-]とCtrl-Tをよく使用するが、Ctrl-Tはtmuxにかぶるのでctrl-[に変更
 nnoremap <C-[> :pop<CR>
 
-"TAGLIST
-
+"タグリスト
 set tags=tags
 
 " #---------------------------#
@@ -89,15 +88,11 @@ NeoBundleFetch 'Shougo/neobundle.vim'
  
 " 追加でプラグインをインストール際は以下に記述
 NeoBundle 'rcmdnk/vim-markdown'
-"NeoBundle 'kannokanno/previm'
-"NeoBundle 'tyru/open-browser.vim'
+NeoBundle 'kannokanno/previm'
+NeoBundle 'tyru/open-browser.vim'
 au BufRead,BufNewFile *.md set filetype=markdown
-"let g:previm_open_cmd = 'firefox'
-"let g:previm_open_cmd = 'open -a Firefox'
-" hateblo.vimの依存モジュール
-NeoBundle 'mattn/webapi-vim'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'kana/vim-metarw'
+let g:previm_open_cmd = 'firefox'
+let g:previm_open_cmd = 'open -a Firefox'
 
 " Trinity
 " Command : TrinityToggleAll
@@ -148,6 +143,13 @@ NeoBundle 'Shougo/vinarise'
 " B 	ビットマップを描画
 " w 	次の値までスキップ
 " b 	前の値までスキップ
+
+NeoBundle 'kana/vim-submode'
+
+" Hatena Blog
+NeoBundle 'mattn/webapi-vim'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'moznion/hateblo.vim'
 
 call neobundle#end()
  
