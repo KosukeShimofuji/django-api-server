@@ -1,4 +1,4 @@
-# djangoでAPIサーバを作成する
+# djangoの学習
 
 djangoでAPIサーバを作成し、rest形式のリクエストを受け取り、openstackを操作するapiサーバを作成する。
 
